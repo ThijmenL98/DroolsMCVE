@@ -29,10 +29,17 @@ lazy val root = (project in file("."))
   .settings(
     assembly / assemblyJarName := "myJar.jar",
     assembly / assemblyMergeStrategy := {
-      case x if x.endsWith("module-info.class") => MergeStrategy.discard;
-      case PathList("META-INF", "services", xs@_*) => MergeStrategy.concat
-      case PathList("META-INF", "kmodule.xml") => MergeStrategy.singleOrError
-      case PathList("META-INF", xs@_*) => MergeStrategy.discard
-      case _ => MergeStrategy.first
+      case xs if xs.endsWith("LICENSE") => MergeStrategy.discard
+      case xs if xs.endsWith("LICENSE.txt") => MergeStrategy.discard
+      case xs if xs.endsWith("INDEX.LIST") => MergeStrategy.discard
+      case xs if xs.endsWith("MANIFEST.MF") => MergeStrategy.discard
+      case xs if xs.endsWith("NOTICE") => MergeStrategy.discard
+      case xs if xs.endsWith("NOTICE.txt") => MergeStrategy.discard
+      case xs if xs.endsWith("module-info.class") => MergeStrategy.discard
+      case PathList("META-INF", "services", "org.apache.poi.sl.draw.ImageRenderer") => MergeStrategy.filterDistinctLines
+      case PathList("META-INF", "services", "org.apache.poi.ss.usermodel.WorkbookProvider") => MergeStrategy.filterDistinctLines
+      case PathList("META-INF", "services", "org.apache.poi.extractor.ExtractorProvider") => MergeStrategy.filterDistinctLines
+      case PathList("META-INF", "services", "org.drools.wiring.api.ComponentsSupplier") => MergeStrategy.filterDistinctLines
+      case _ => MergeStrategy.singleOrError
     }
   )
