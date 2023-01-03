@@ -14,5 +14,6 @@ object Main extends App {
 
   kieSession.setGlobal("logger", logger)
   kieSession.insert(new Foo("bar"))
+  Thread.sleep(100)
   kieSession.fireAllRules
 }

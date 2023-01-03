@@ -5,15 +5,10 @@ import domain.Foo;
 
 global Logger logger;
 
-declare Foo
-    @role(event)
-    @expires(10s)
-end
-
 rule "monitoring"
 when
     $baz: Foo(bar == "bar")
 then
-    logger.warn("Hi");
+    System.out.println("Hi, received!");
 end
 
