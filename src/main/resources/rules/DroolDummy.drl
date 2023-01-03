@@ -1,0 +1,19 @@
+package rules;
+
+import org.slf4j.Logger;
+import domain.Foo;
+
+global Logger logger;
+
+declare Foo
+    @role(event)
+    @expires(10s)
+end
+
+rule "monitoring"
+when
+    $baz: Foo(bar == "bar")
+then
+    logger.warn("Hi");
+end
+

@@ -11,6 +11,7 @@ lazy val root = (project in file("."))
       "org.drools" % "drools-decisiontables" % "8.31.1.Final",
       "org.drools" % "drools-mvel" % "8.31.1.Final",
       "org.drools" % "drools-model-compiler" % "8.31.1.Final",
+      "org.drools" % "drools-xml-support" % "8.31.1.Final",
       "org.kie" % "kie-api" % "8.31.1.Final",
       "org.slf4j" % "slf4j-api" % "2.0.5",
       "org.slf4j" % "slf4j-log4j12" % "2.0.5"
@@ -28,6 +29,7 @@ lazy val root = (project in file("."))
   .settings(
     assembly / assemblyJarName := "myJar.jar",
     assembly / assemblyMergeStrategy := {
+      case x if x.endsWith("module-info.class") => MergeStrategy.discard;
       case PathList("META-INF", "services", xs@_*) => MergeStrategy.concat
       case PathList("META-INF", "kmodule.xml") => MergeStrategy.singleOrError
       case PathList("META-INF", xs@_*) => MergeStrategy.discard
