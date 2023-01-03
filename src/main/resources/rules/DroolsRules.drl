@@ -1,0 +1,12 @@
+package rules;
+
+import org.slf4j.Logger;
+
+global Logger logger;
+
+rule "test"
+when
+  $bool: Boolean(true);
+then
+  logger.info("true");
+end
