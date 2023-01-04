@@ -29,16 +29,9 @@ lazy val root = (project in file("."))
   .settings(
     assembly / assemblyJarName := "myJar.jar",
     assembly / assemblyMergeStrategy := {
-      case xs if Seq(
-        "LICENSE",
-        "LICENSE.txt",
-        "INDEX.LIST",
-        "MANIFEST.MF",
-        "NOTICE",
-        "NOTICE.txt",
-        "module-info.class"
-      ).exists(xs.endsWith) => MergeStrategy.discard
-      case PathList("META-INF", "services", xs@_*) => MergeStrategy.filterDistinctLines
-      case _ => MergeStrategy.singleOrError
-    }
+      case x if x.endsWith("module-info.class") => MergeStrategy.discard
+      case x =>
+        val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
+        oldStrategy(x)
+    },
   )
