@@ -29,10 +29,9 @@ lazy val root = (project in file("."))
   .settings(
     assembly / assemblyJarName := "myJar.jar",
     assembly / assemblyMergeStrategy := {
-      case x if x.endsWith("module-info.class") => MergeStrategy.discard;
-      case PathList("META-INF", "services", xs@_*) => MergeStrategy.concat
-      case PathList("META-INF", "kmodule.xml") => MergeStrategy.singleOrError
-      case PathList("META-INF", xs@_*) => MergeStrategy.discard
-      case _ => MergeStrategy.first
-    }
+      case x if x.endsWith("module-info.class") => MergeStrategy.discard
+      case x =>
+        val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
+        oldStrategy(x)
+    },
   )
