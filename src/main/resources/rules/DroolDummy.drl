@@ -1,14 +1,37 @@
 package rules;
 
-import org.slf4j.Logger;
-import domain.Foo;
+import java.util.ArrayList;
+import domain.*;
 
-global Logger logger;
-
-rule "monitoring"
-when
-    $baz: Foo(bar == "bar")
-then
-    System.out.println("Hi, received!");
+declare Message
+    @role(event)
+    @timestamp(timestamp)
+    @expires(10s)
 end
 
+rule "throttle state activated"
+when
+    $meta: CurrentState(throttleState == false)
+    $lastMessage: Message($lastTimestamp: timestamp)
+    not (Message(timestamp > $lastMessage.timestamp))
+    $messages: ArrayList(size > 20) from collect(
+        $message: Message() over window:time(10s)
+    )
+then
+    $meta.setLastThrottled($lastMessage.getTimestamp());
+    $meta.setThrottleState(true);
+    update($meta);
+end
+
+rule "throttle state deactivated"
+when
+    $meta: CurrentState(throttleState == true)
+    $lastMessage: Message($lastTimestamp: timestamp)
+    not (Message(timestamp > $lastMessage.timestamp))
+    $messages: ArrayList(size <= 20) from collect(
+        $message: Message() over window:time(10s)
+    )
+then
+    $meta.setThrottleState(false);
+    update($meta);
+end

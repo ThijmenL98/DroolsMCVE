@@ -6,6 +6,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "MCVE",
     libraryDependencies ++= Seq(
+      "org.scalatest" %% "scalatest" % "3.2.14" % "test",
       "org.drools" % "drools-core" % "8.31.1.Final",
       "org.drools" % "drools-compiler" % "8.31.1.Final",
       "org.drools" % "drools-decisiontables" % "8.31.1.Final",

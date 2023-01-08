@@ -1,6 +1,4 @@
-// Copyright (C) 2022-2023 Eaglescience Software B.V.
-
-import domain.Foo
+import domain.CurrentState
 import org.kie.api.KieServices
 import org.kie.api.runtime.{KieContainer, KieSession}
 import org.slf4j.{Logger, LoggerFactory}
@@ -13,7 +11,7 @@ object Main extends App {
   val kieSession: KieSession = kieContainer.newKieSession("DroolDummyKS")
 
   kieSession.setGlobal("logger", logger)
-  kieSession.insert(new Foo("bar"))
+  kieSession.insert(new CurrentState(false))
   Thread.sleep(100)
   kieSession.fireAllRules
 }
