@@ -10,7 +10,6 @@ object Main extends App {
   val kieContainer: KieContainer = kieServices.getKieClasspathContainer
   val kieSession: KieSession = kieContainer.newKieSession("DroolDummyKS")
 
-  kieSession.setGlobal("logger", logger)
   kieSession.insert(new CurrentState(false))
   Thread.sleep(100)
   kieSession.fireAllRules
